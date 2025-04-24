@@ -1,4 +1,4 @@
-package API_to_DB_Memesapp
+package main
 
 type Role struct {
 	IDRole   string `gorm:"primaryKey" json:"id_role"`
@@ -14,11 +14,12 @@ type User struct {
 }
 
 type Meme struct {
-	IDMeme           string `gorm:"primaryKey" json:"id_meme"`
-	NameMeme         string `json:"name_meme"`
-	ShortDescription string `json:"short_description"`
-	LongDescription  string `json:"long_description"`
-	IDUser           string `gorm:"primaryKey" json:"id_user"`
+	IDMeme       int     `gorm:"primaryKey;column:idmeme" json:"id_meme"`
+	Name         string  `gorm:"column:name;type:varchar(255)" json:"name_meme"`
+	IDUser       int     `gorm:"column:iduser" json:"id_user"`
+	ShortDescrij string  `gorm:"column:shortdescription;type:varchar(1023)" json:"short_description"`
+	LongDescrip  string  `gorm:"column:longdescription;type:varchar(1023)" json:"long_description"`
+	VectorList   float32 `gorm:"column:vectorlist" json:"vector_list"`
 }
 
 type TagMeme struct {
