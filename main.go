@@ -1,4 +1,4 @@
-package API_to_DB_Memesapp
+package main
 
 import (
 	"github.com/gin-contrib/cors"
@@ -14,8 +14,9 @@ import (
 var Db *gorm.DB
 
 func initDB() {
-	dsn := "host='ipadress' user='yourUsr' dbname='yourDb' password='yourPass' port=5433 sslmode=disable"
-	Db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	dsn := "host='localhost' user='postgres' dbname='postgres' password='123456' port=5432 sslmode=disable"
+	var err error
+	Db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatal("Failed to connect to Db", err)
 	}
@@ -67,7 +68,7 @@ func updateMeme(c *gin.Context) {
 		return
 	}
 
-	result := Db.Model(&Meme{}).Where("id_dealer = ?", id).Updates(updatedData)
+	result := Db.Model(&Meme{}).Where("IDMeme= ?", id).Updates(updatedData)
 	if result.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
 		return
@@ -81,7 +82,7 @@ func updateMeme(c *gin.Context) {
 
 func deleteMeme(c *gin.Context) {
 	id := c.Param("id")
-	result := Db.Where("id_dealer = ?", id).Delete(&Meme{})
+	result := Db.Where("IDMeme = ?", id).Delete(&Meme{})
 	if result.Error != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": result.Error.Error()})
 		return
